@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="UTF-8">
+    <title>PHP Anydataset by byjg</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
+  </head>
+  <body>
+    <section class="page-header">
+      <h1 class="project-name">PHP Anydataset</h1>
+      <h2 class="project-tagline">A data abstration layer in PHP with several repository types and standard interface.</h2>
+      <a href="https://github.com/byjg/anydataset" class="btn">View on GitHub</a>
+      <a href="https://github.com/byjg/anydataset/zipball/master" class="btn">Download .zip</a>
+      <a href="https://github.com/byjg/anydataset/tarball/master" class="btn">Download .tar.gz</a>
+    </section>
+
+    <section class="main-content">
+      <h1>
+<a id="anydataset" class="anchor" href="#anydataset" aria-hidden="true"><span class="octicon octicon-link"></span></a>AnyDataset</h1>
+
+<p><a href="https://travis-ci.org/byjg/anydataset"><img src="https://travis-ci.org/byjg/anydataset.svg?branch=master" alt="Build Status"></a>
+<a href="https://insight.sensiolabs.com/projects/159bc0fe-42dd-4022-a3a2-67e871491d6c"><img src="https://insight.sensiolabs.com/projects/159bc0fe-42dd-4022-a3a2-67e871491d6c/mini.png" alt="SensioLabsInsight"></a></p>
+
+<h2>
+<a id="description" class="anchor" href="#description" aria-hidden="true"><span class="octicon octicon-link"></span></a>Description</h2>
+
+<p>A data abstraction layer in PHP to manipulate any set of data with a standardized interface from any data source.</p>
+
+<h2>
+<a id="features" class="anchor" href="#features" aria-hidden="true"><span class="octicon octicon-link"></span></a>Features</h2>
+
+<h3>
+<a id="read-an-write-with-a-number-of-data-sources-accessed-by-a-standardized-interface-see-more-here" class="anchor" href="#read-an-write-with-a-number-of-data-sources-accessed-by-a-standardized-interface-see-more-here" aria-hidden="true"><span class="octicon octicon-link"></span></a>Read an write* with a number of data sources accessed by a standardized interface (<a href="docs/Connecting-to-Data-Sources.md">see more here</a>):</h3>
+
+<ul>
+<li>Array</li>
+<li>Relational Databases (based on PDO)</li>
+<li>DBLib (SQL Server php native - windows only)</li>
+<li>OCI8 (Oracle php native interface)</li>
+<li>Text files (fixed and delimeted like CSV)</li>
+<li>Json documents</li>
+<li>Xml documents</li>
+<li>Sockets</li>
+<li><a href="docs/Connecting-to-MongoDB.md">MongoDB</a></li>
+<li>SparQL</li>
+</ul>
+
+<h2>
+<a id="examples" class="anchor" href="#examples" aria-hidden="true"><span class="octicon octicon-link"></span></a>Examples</h2>
+
+<p>The easiest way to work is to get an repository and get an iterator for navigate throught the data.</p>
+
+<div class="highlight highlight-php"><pre><span class="pl-s1"><span class="pl-smi">$repository</span> <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-c1">TextFileDataset</span>(<span class="pl-s"><span class="pl-pds">'</span>myfile<span class="pl-pds">'</span></span>, [<span class="pl-s"><span class="pl-pds">'</span>field1<span class="pl-pds">'</span></span>, <span class="pl-s"><span class="pl-pds">'</span>field2<span class="pl-pds">'</span></span>, <span class="pl-s"><span class="pl-pds">'</span>field3<span class="pl-pds">'</span></span>], <span class="pl-c1">TextFileDataset</span><span class="pl-k">::</span><span class="pl-c1">CSVFILE</span>);</span>
+<span class="pl-s1"><span class="pl-smi">$iterator</span> <span class="pl-k">=</span> <span class="pl-smi">$repository</span><span class="pl-k">-&gt;</span>getIterator();</span>
+<span class="pl-s1"></span>
+<span class="pl-s1"><span class="pl-c">// and then:</span></span>
+<span class="pl-s1"><span class="pl-k">foreach</span> (<span class="pl-smi">$iterator</span> <span class="pl-k">as</span> <span class="pl-smi">$row</span>) {</span>
+<span class="pl-s1">    <span class="pl-c1">echo</span> <span class="pl-smi">$row</span><span class="pl-k">-&gt;</span>getField(<span class="pl-s"><span class="pl-pds">'</span>field1<span class="pl-pds">'</span></span>);  <span class="pl-c">// or $row-&gt;toArray();</span></span>
+<span class="pl-s1">}</span>
+<span class="pl-s1"></span>
+<span class="pl-s1"><span class="pl-c">// Or </span></span>
+<span class="pl-s1"><span class="pl-c1">print_r</span>(<span class="pl-smi">$iterator</span><span class="pl-k">-&gt;</span>toArray());</span></pre></div>
+
+<h3>
+<a id="cache-results" class="anchor" href="#cache-results" aria-hidden="true"><span class="octicon octicon-link"></span></a>Cache results</h3>
+
+<p>You can easily cache your results with the CachedDBDataset class;</p>
+
+<div class="highlight highlight-php"><pre><span class="pl-s1"><span class="pl-smi">$repository</span> <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-c1">CachedDBDataset</span>(<span class="pl-s"><span class="pl-pds">'</span>connection<span class="pl-pds">'</span></span>, <span class="pl-k">new</span> <span class="pl-c1">\ByJG\Cache\</span><span class="pl-c1">MemcachedEngine</span>());</span>
+<span class="pl-s1"><span class="pl-smi">$iterator</span> <span class="pl-k">=</span> <span class="pl-smi">$repository</span><span class="pl-k">-&gt;</span>getIterator(<span class="pl-s"><span class="pl-pds">'</span>select field1, field2 from sometable<span class="pl-pds">'</span></span>, <span class="pl-c1">120</span>); <span class="pl-c">// cache for 2 minutes</span></span></pre></div>
+
+<h3>
+<a id="relational-database-connections-string-based-on-url" class="anchor" href="#relational-database-connections-string-based-on-url" aria-hidden="true"><span class="octicon octicon-link"></span></a>Relational database connections string based on URL</h3>
+
+<p>The connection string for relational databases is based on URL. Connect to mysql in the server localhost with user 'root'
+and password 'somepass' is easy as <code>mysql://root:somepass@localhost/schema</code></p>
+
+<p>You can store your connections string in the file <code>config/anydatasetconfig.php</code> like </p>
+
+<div class="highlight highlight-php"><pre><span class="pl-s1"><span class="pl-k">return</span> [</span>
+<span class="pl-s1">    <span class="pl-s"><span class="pl-pds">'</span>connections<span class="pl-pds">'</span></span> <span class="pl-k">=&gt;</span> [</span>
+<span class="pl-s1">        <span class="pl-s"><span class="pl-pds">'</span>development<span class="pl-pds">'</span></span> <span class="pl-k">=&gt;</span> [</span>
+<span class="pl-s1">            <span class="pl-s"><span class="pl-pds">'</span>url<span class="pl-pds">'</span></span> <span class="pl-k">=&gt;</span> <span class="pl-s"><span class="pl-pds">'</span>mysql://root:somepass@localhost/schema<span class="pl-pds">'</span></span>,</span>
+<span class="pl-s1">            <span class="pl-s"><span class="pl-pds">'</span>type<span class="pl-pds">'</span></span> <span class="pl-k">=&gt;</span> <span class="pl-s"><span class="pl-pds">'</span>dsn<span class="pl-pds">'</span></span></span>
+<span class="pl-s1">        ],</span>
+<span class="pl-s1">        <span class="pl-s"><span class="pl-pds">'</span>staging<span class="pl-pds">'</span></span> <span class="pl-k">=&gt;</span> [</span>
+<span class="pl-s1">            <span class="pl-s"><span class="pl-pds">'</span>url<span class="pl-pds">'</span></span> <span class="pl-k">=&gt;</span> <span class="pl-s"><span class="pl-pds">'</span>mysql://root:otherpass@192.168.1.205:3307/schema<span class="pl-pds">'</span></span>,</span>
+<span class="pl-s1">            <span class="pl-s"><span class="pl-pds">'</span>type<span class="pl-pds">'</span></span> <span class="pl-k">=&gt;</span> <span class="pl-s"><span class="pl-pds">'</span>dsn<span class="pl-pds">'</span></span></span>
+<span class="pl-s1">        ]</span>
+<span class="pl-s1">    ]</span>
+<span class="pl-s1">];</span></pre></div>
+
+<h3>
+<a id="load-balance-and-connection-pooling" class="anchor" href="#load-balance-and-connection-pooling" aria-hidden="true"><span class="octicon octicon-link"></span></a>Load balance and connection pooling</h3>
+
+<p>The API have support for connection load balancing, connection pooling and persistent connection with 
+<a href="http://sqlrelay.sourceforge.net/">SQL Relay</a> library (requires install)</p>
+
+<p>You only need change your connection string to:</p>
+
+<pre><code>sqlrelay://root:somepass@server/schema
+</code></pre>
+
+<h3>
+<a id="object-binding" class="anchor" href="#object-binding" aria-hidden="true"><span class="octicon octicon-link"></span></a>Object binding</h3>
+
+<div class="highlight highlight-php"><pre><span class="pl-s1"><span class="pl-k">class</span> <span class="pl-en">MyModel</span> <span class="pl-k">extends</span> <span class="pl-c1">\ByJG\AnyDataset\Model\</span><span class="pl-e">BaseModel</span></span>
+<span class="pl-s1">{</span>
+<span class="pl-s1">    <span class="pl-k">protected</span> <span class="pl-smi">$prop1</span>;</span>
+<span class="pl-s1">    <span class="pl-k">public</span> getProp1(){ <span class="pl-k">...</span> };</span>
+<span class="pl-s1">    <span class="pl-k">public</span> setProp1(<span class="pl-smi">$value</span>) { <span class="pl-k">...</span> };</span>
+<span class="pl-s1">}</span>
+<span class="pl-s1"></span>
+<span class="pl-s1"><span class="pl-c">// And then you can bind values from another object or array</span></span>
+<span class="pl-s1"><span class="pl-smi">$myModel</span> <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-c1">MyModel</span>(<span class="pl-smi">$_REQUEST</span>); <span class="pl-c">// suppose that $_REQUEST['prop1'] exists</span></span></pre></div>
+
+<h3>
+<a id="create-dal-class-easily" class="anchor" href="#create-dal-class-easily" aria-hidden="true"><span class="octicon octicon-link"></span></a>Create DAL class easily</h3>
+
+<div class="highlight highlight-php"><pre><span class="pl-s1"><span class="pl-k">class</span> <span class="pl-en">MyDAL</span> <span class="pl-k">extends</span> <span class="pl-e">BaseDBAccess</span></span>
+<span class="pl-s1">{</span>
+<span class="pl-s1">    <span class="pl-k">public</span> <span class="pl-k">function</span> <span class="pl-en">getById</span>(<span class="pl-smi">$id</span>)</span>
+<span class="pl-s1">    {</span>
+<span class="pl-s1">        <span class="pl-k">return</span> <span class="pl-smi">$this</span><span class="pl-k">-&gt;</span>getIterator(<span class="pl-s"><span class="pl-pds">'</span>select * from sometable where id = :id<span class="pl-pds">'</span></span>, [ <span class="pl-s"><span class="pl-pds">'</span>id<span class="pl-pds">'</span></span> <span class="pl-k">=&gt;</span> <span class="pl-smi">$id</span> ]);</span>
+<span class="pl-s1">    }</span>
+<span class="pl-s1"></span>
+<span class="pl-s1">    <span class="pl-c">// Some query need to be cached for 180 seconds</span></span>
+<span class="pl-s1">    <span class="pl-k">public</span> <span class="pl-k">function</span> <span class="pl-en">getExpensiveQuery</span>()</span>
+<span class="pl-s1">    {</span>
+<span class="pl-s1">        <span class="pl-k">return</span> <span class="pl-smi">$this</span><span class="pl-k">-&gt;</span>getIterator(<span class="pl-s"><span class="pl-pds">'</span>select * from expensive_query<span class="pl-pds">'</span></span>, <span class="pl-c1">null</span>, <span class="pl-c1">180</span>);</span>
+<span class="pl-s1">    }</span>
+<span class="pl-s1">}</span></pre></div>
+
+<h3>
+<a id="and-more" class="anchor" href="#and-more" aria-hidden="true"><span class="octicon octicon-link"></span></a>And more</h3>
+
+<p>And more...</p>
+
+<h2>
+<a id="install" class="anchor" href="#install" aria-hidden="true"><span class="octicon octicon-link"></span></a>Install</h2>
+
+<p>Just type: <code>composer require "byjg/anydataset=~1.0"</code></p>
+
+<h2>
+<a id="running-tests" class="anchor" href="#running-tests" aria-hidden="true"><span class="octicon octicon-link"></span></a>Running Tests</h2>
+
+<div class="highlight highlight-php"><pre><span class="pl-s1"><span class="pl-c1">cd</span> <span class="pl-c1">tests</span></span>
+<span class="pl-s1"><span class="pl-c1">phpunit</span> <span class="pl-k">--</span><span class="pl-c1">bootstrap</span> <span class="pl-c1">bootstrap</span><span class="pl-k">.</span><span class="pl-c1">php</span> <span class="pl-k">.</span></span></pre></div>
+
+<hr>
+
+<p><a href="http://opensource.byjg.com">Open source ByJG</a></p>
+
+      <footer class="site-footer">
+        <span class="site-footer-owner"><a href="https://github.com/byjg/anydataset">PHP Anydataset</a> is maintained by <a href="https://github.com/byjg">byjg</a>.</span>
+
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the <a href="https://github.com/jasonlong/cayman-theme">Cayman theme</a> by <a href="https://twitter.com/jasonlong">Jason Long</a>.</span>
+      </footer>
+
+    </section>
+
+  
+  </body>
+</html>
