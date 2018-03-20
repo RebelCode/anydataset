@@ -35,7 +35,7 @@ class Factory
                 ],
                 (array)$schemesAlternative
             ),
-            DbDriverInterface::class
+            'ByJG\AnyDataset\DbDriverInterface'
         );
 
         return $instance;
@@ -58,7 +58,7 @@ class Factory
                 ],
                 (array)$schemesAlternative
             ),
-            NoSqlInterface::class
+            'ByJG\AnyDataset\NoSqlInterface'
         );
 
         return $instance;
@@ -81,7 +81,7 @@ class Factory
                 ],
                 (array)$schemesAlternative
             ),
-            KeyValueInterface::class
+            'ByJG\AnyDataset\KeyValueInterface'
         );
 
         return $instance;
@@ -93,7 +93,7 @@ class Factory
 
         $scheme = $connectionUri->getScheme();
 
-        $class = isset($validSchemes[$scheme]) ? $validSchemes[$scheme] : PdoLiteral::class;
+        $class = isset($validSchemes[$scheme]) ? $validSchemes[$scheme] : 'ByJG\AnyDataset\Store\PdoLiteral';
 
         $instance = new $class($connectionUri);
 

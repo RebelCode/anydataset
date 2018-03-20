@@ -53,12 +53,12 @@ class MongoDbDriver implements NoSqlInterface
         $this->connectionUri = $connUri;
         
         $this->excludeMongoClass = [
-            Binary::class,
-            Decimal128::class,
-            Javascript::class,
-            ObjectID::class,
-            Timestamp::class,
-            UTCDateTime::class,
+            'MongoDB\BSON\Binary',
+            'MongoDB\BSON\Decimal128',
+            'MongoDB\BSON\Javascript',
+            'MongoDB\BSON\ObjectID',
+            'MongoDB\BSON\Timestamp',
+            'MongoDB\BSON\UTCDateTime',
         ];
 
         $hosts = $this->connectionUri->getHost();
